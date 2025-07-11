@@ -13,7 +13,7 @@ from demand_generator import DemandGenerator
 
 def signal_handler(sig: int, frame: Any) -> None:
     """Handle Ctrl+C gracefully"""
-    print("\nShutting down demand generator...")
+    # Don't print anything - let main() handle cleanup messages
     sys.exit(0)
 
 
@@ -37,21 +37,25 @@ def main() -> None:
 
     try:
         # Initialize demand generator
-        print(f"Loading configuration from: {args.config}")
         generator = DemandGenerator(args.config)
-
-        # Start streaming
-        print("Starting demand generation...")
-        print("Press Ctrl+C to stop")
+        
+        # Only print status messages if not in JSON output mode
+        if generator.output_format != "json":
+            print(f"Loading configuration from: {args.config}")
+            print("Starting demand generation...")
+            print("Press Ctrl+C to stop")
+        
         generator.start_streaming()
 
         if args.duration:
-            print(f"Running for {args.duration} seconds...")
+            if generator.output_format != "json":
+                print(f"Running for {args.duration} seconds...")
             import time
 
             time.sleep(args.duration)
             generator.stop_streaming()
-            print("Finished generating demand.")
+            if generator.output_format != "json":
+                print("Finished generating demand.")
         else:
             # Run indefinitely until interrupted
             try:
@@ -63,13 +67,14 @@ def main() -> None:
                 pass
             finally:
                 generator.stop_streaming()
-                print("Demand generator stopped.")
+                if generator.output_format != "json":
+                    print("Demand generator stopped.")
 
     except FileNotFoundError:
-        print(f"Error: Configuration file '{args.config}' not found.")
+        print(f"Error: Configuration file '{args.config}' not found.", file=sys.stderr)
         sys.exit(1)
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
 
 

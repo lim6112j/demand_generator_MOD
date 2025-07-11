@@ -105,6 +105,6 @@ class DemandGenerator:
         """Send trip request to output stream"""
         if self.output_format == "json":
             output = trip_request.to_json()
-            print(output)  # For now, print to console
+            print(output, flush=True)  # For now, print to console
         else:
             print(f"Generated trip: {trip_request.id}")
