@@ -98,7 +98,7 @@ class TestDemandGenerator(unittest.TestCase):
         self.assertEqual(count, 0)
 
     @patch("demand_generator.datetime")
-    def test_generate_trip_request(self, mock_datetime: datetime) -> None:
+    def test_generate_trip_request(self, mock_datetime: MagicMock) -> None:
         """Test trip request generation"""
         # Mock current time
         test_time = datetime(2023, 6, 15, 8, 30, 0)
