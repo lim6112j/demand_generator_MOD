@@ -136,7 +136,7 @@ class TemporalPatternEngine:
         for pattern in self.patterns:
             total_multiplier *= pattern.get_demand_multiplier(timestamp)
 
-        return self.base_rate * total_multiplier
+        return float(self.base_rate * total_multiplier)
 
     def add_pattern(self, pattern: TimePattern) -> None:
         """Add a custom pattern to the engine"""

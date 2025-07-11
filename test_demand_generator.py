@@ -57,7 +57,7 @@ class TestDemandGenerator(unittest.TestCase):
 
         # Create temporary config file
         self.temp_config = tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False)
-        import yaml  # type: ignore
+        import yaml
 
         yaml.dump(self.config_data, self.temp_config)
         self.temp_config.close()
