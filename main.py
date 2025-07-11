@@ -38,13 +38,13 @@ def main() -> None:
     try:
         # Initialize demand generator
         generator = DemandGenerator(args.config)
-        
+
         # Only print status messages if not in JSON output mode
         if generator.output_format != "json":
             print(f"Loading configuration from: {args.config}")
             print("Starting demand generation...")
             print("Press Ctrl+C to stop")
-        
+
         generator.start_streaming()
 
         if args.duration:
