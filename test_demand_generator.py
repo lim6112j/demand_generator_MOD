@@ -82,7 +82,7 @@ class TestDemandGenerator(unittest.TestCase):
         self.assertTrue(self.demand_generator.burst_enabled)
         self.assertFalse(self.demand_generator.running)
 
-    def test_calculate_requests_count(self):
+    def test_calculate_requests_count(self) -> None:
         """Test request count calculation"""
         # Test with exact integer rate
         count = self.demand_generator._calculate_requests_count(2.0)
