@@ -17,11 +17,13 @@ class DemandGenerator:
             self.config = yaml.safe_load(f)
         # Initialize components
         self.stop_registry = StopRegistry()
-        self.temporal_engine = TemporalPatternEngine(self.config['temporal_patterns'])
+        self.temporal_engine = TemporalPatternEngine(self.config["temporal_patterns"])
         # Set up streaming parameters
-        self.base_rate = self.config['streaming'].get('rate_per_second', 0.167)  # Default to 10 requests per minute
-        self.output_format = self.config['streaming']['output_format']
-        self.burst_enabled = self.config['streaming'].get('burst_enabled', True)
+        self.base_rate = self.config["streaming"].get(
+            "rate_per_second", 0.167
+        )  # Default to 10 requests per minute
+        self.output_format = self.config["streaming"]["output_format"]
+        self.burst_enabled = self.config["streaming"].get("burst_enabled", True)
         # Threading control
         self.running = False
         self.thread = None
@@ -64,15 +66,23 @@ class DemandGenerator:
     def _generate_trip_request(self, timestamp: datetime) -> TripRequest:
         """Generate a single trip request"""
         # Select random origin and destination zones
-        zones = self.config['geographic']['default_zones']
-        origin_zone = random.choice(zones)['id']
-        destination_zone = random.choice(zones)['id']
+        zones = self.config["geographic"]["default_zones"]
+        origin_zone = random.choice(zones)["id"]
+        destination_zone = random.choice(zones)["id"]
         # Get random stops from selected zones
         origin_stops = self.stop_registry.get_stops_in_zone(origin_zone)
         destination_stops = self.stop_registry.get_stops_in_zone(destination_zone)
         # Fallback to any random stop if zone has no stops
-        origin_stop = random.choice(origin_stops).id if origin_stops else self.stop_registry.get_random_stop().id
-        destination_stop = random.choice(destination_stops).id if destination_stops else self.stop_registry.get_random_stop().id
+        origin_stop = (
+            random.choice(origin_stops).id
+            if origin_stops
+            else self.stop_registry.get_random_stop().id
+        )
+        destination_stop = (
+            random.choice(destination_stops).id
+            if destination_stops
+            else self.stop_registry.get_random_stop().id
+        )
         # Generate trip request
         trip_request = TripRequest(
             id=f"trip_{timestamp.strftime('%Y%m%d_%H%M%S')}_{random.randint(1000, 9999)}",
@@ -80,13 +90,15 @@ class DemandGenerator:
             destination_stop_id=destination_stop,
             timestamp=timestamp,
             passenger_count=random.randint(1, 4),
-            trip_purpose=random.choice(['work', 'shopping', 'leisure', 'medical', 'education']),
-            priority=random.randint(1, 3)
+            trip_purpose=random.choice(
+                ["work", "shopping", "leisure", "medical", "education"]
+            ),
+            priority=random.randint(1, 3),
         )
         return trip_request
     def _send_to_output_stream(self, trip_request: TripRequest):
         """Send trip request to output stream"""
-        if self.output_format == 'json':
+        if self.output_format == "json":
             output = trip_request.to_json()
             print(output)  # For now, print to console
         else:

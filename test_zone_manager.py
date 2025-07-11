@@ -13,7 +13,7 @@ class TestGeographicZone(unittest.TestCase):
             center_lat=40.7589,
             center_lon=-73.9851,
             radius_km=2.0,
-            demand_weight=1.5
+            demand_weight=1.5,
         )
 
     def test_zone_initialization(self):
@@ -46,7 +46,7 @@ class TestGeographicZone(unittest.TestCase):
             name="Default Zone",
             center_lat=40.0,
             center_lon=-74.0,
-            radius_km=1.0
+            radius_km=1.0,
         )
         self.assertEqual(zone.demand_weight, 1.0)
 
@@ -61,7 +61,7 @@ class TestStop(unittest.TestCase):
             lat=40.7589,
             lon=-73.9851,
             zone_id="downtown",
-            stop_type="bus"
+            stop_type="bus",
         )
 
         self.assertEqual(stop.id, "stop_001")
@@ -78,7 +78,7 @@ class TestStop(unittest.TestCase):
             name="Central Station",
             lat=40.7500,
             lon=-73.9900,
-            zone_id="midtown"
+            zone_id="midtown",
         )
         self.assertEqual(stop.stop_type, "bus")
 
@@ -150,7 +150,7 @@ class TestStopRegistry(unittest.TestCase):
             name="Test Stop",
             lat=40.7000,
             lon=-74.0000,
-            zone_id="test_zone"
+            zone_id="test_zone",
         )
 
         self.registry.add_stop(new_stop)
@@ -168,7 +168,7 @@ class TestStopRegistry(unittest.TestCase):
             center_lat=40.7000,
             center_lon=-74.0000,
             radius_km=1.0,
-            demand_weight=2.0
+            demand_weight=2.0,
         )
 
         self.registry.add_zone(new_zone)
@@ -181,9 +181,12 @@ class TestStopRegistry(unittest.TestCase):
         zone_ids = {zone.id for zone in self.registry.zones}
 
         for stop in self.registry.stops:
-            self.assertIn(stop.zone_id, zone_ids,
-                         f"Stop {stop.id} references invalid zone {stop.zone_id}")
+            self.assertIn(
+                stop.zone_id,
+                zone_ids,
+                f"Stop {stop.id} references invalid zone {stop.zone_id}",
+            )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

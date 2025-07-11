@@ -5,6 +5,7 @@ from dataclasses import dataclass
 @dataclass
 class GeographicZone:
     """Represents a geographic zone with boundaries and properties"""
+
     id: str
     name: str
     center_lat: float
@@ -17,14 +18,14 @@ class GeographicZone:
         # Simple distance calculation (not precise for large distances)
         lat_diff = lat - self.center_lat
         lon_diff = lon - self.center_lon
-        distance_km = ((lat_diff ** 2 + lon_diff ** 2) **
-                       0.5) * 111  # Rough km conversion
+        distance_km = ((lat_diff**2 + lon_diff**2) ** 0.5) * 111  # Rough km conversion
         return distance_km <= self.radius_km
 
 
 @dataclass
 class Stop:
     """Represents a transit stop"""
+
     id: str
     name: str
     lat: float
@@ -45,8 +46,7 @@ class StopRegistry:
         """Initialize with some default zones and stops for testing"""
         # Default zones (example city layout)
         self.zones = [
-            GeographicZone("downtown", "Downtown",
-                           40.7589, -73.9851, 2.0, 3.0),
+            GeographicZone("downtown", "Downtown", 40.7589, -73.9851, 2.0, 3.0),
             GeographicZone("midtown", "Midtown", 40.7505, -73.9934, 1.5, 2.5),
             GeographicZone("uptown", "Uptown", 40.7831, -73.9712, 2.5, 1.5),
             GeographicZone("suburbs", "Suburbs", 40.7282, -73.7949, 5.0, 1.0),
@@ -54,16 +54,12 @@ class StopRegistry:
 
         # Default stops
         self.stops = [
-            Stop("stop_001", "Main St & 1st Ave",
-                 40.7589, -73.9851, "downtown"),
+            Stop("stop_001", "Main St & 1st Ave", 40.7589, -73.9851, "downtown"),
             Stop("stop_002", "Central Station", 40.7505, -73.9934, "midtown"),
             Stop("stop_003", "Park Plaza", 40.7831, -73.9712, "uptown"),
-            Stop("stop_004", "Mall Transit Center",
-                 40.7282, -73.7949, "suburbs"),
-            Stop("stop_005", "University Campus",
-                 40.7614, -73.9776, "downtown"),
-            Stop("stop_006", "Hospital District",
-                 40.7505, -73.9834, "midtown"),
+            Stop("stop_004", "Mall Transit Center", 40.7282, -73.7949, "suburbs"),
+            Stop("stop_005", "University Campus", 40.7614, -73.9776, "downtown"),
+            Stop("stop_006", "Hospital District", 40.7505, -73.9834, "midtown"),
         ]
 
     def get_random_stop(self) -> Stop:

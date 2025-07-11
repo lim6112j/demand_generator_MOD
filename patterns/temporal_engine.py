@@ -33,7 +33,12 @@ class WeekdayPattern(TimePattern):
 class RushHourPattern(TimePattern):
     """Special pattern for rush hour peaks"""
 
-    def __init__(self, morning_peak: tuple = (7, 9), evening_peak: tuple = (17, 19), peak_multiplier: float = 2.0):
+    def __init__(
+        self,
+        morning_peak: tuple = (7, 9),
+        evening_peak: tuple = (17, 19),
+        peak_multiplier: float = 2.0,
+    ):
         self.morning_start, self.morning_end = morning_peak
         self.evening_start, self.evening_end = evening_peak
         self.peak_multiplier = peak_multiplier
@@ -57,46 +62,70 @@ class TemporalPatternEngine:
 
     def __init__(self, config: dict):
         self.patterns: list[TimePattern] = []
-        self.base_rate = config.get('base_rate', 10.0)  # requests per minute
+        self.base_rate = config.get("base_rate", 10.0)  # requests per minute
         self._initialize_patterns(config)
 
     def _initialize_patterns(self, config: dict):
         """Initialize patterns from configuration"""
 
         # Hourly pattern
-        if 'hourly_pattern' in config:
-            hourly_config = config['hourly_pattern']
+        if "hourly_pattern" in config:
+            hourly_config = config["hourly_pattern"]
             self.patterns.append(HourlyPattern(hourly_config))
         else:
             # Default hourly pattern
             default_hourly = {
-                6: 0.5, 7: 1.5, 8: 2.0, 9: 1.8, 10: 1.2, 11: 1.3,
-                12: 1.5, 13: 1.4, 14: 1.2, 15: 1.3, 16: 1.6, 17: 2.2,
-                18: 2.5, 19: 2.0, 20: 1.5, 21: 1.0, 22: 0.8, 23: 0.5,
-                0: 0.3, 1: 0.2, 2: 0.1, 3: 0.1, 4: 0.2, 5: 0.3
+                6: 0.5,
+                7: 1.5,
+                8: 2.0,
+                9: 1.8,
+                10: 1.2,
+                11: 1.3,
+                12: 1.5,
+                13: 1.4,
+                14: 1.2,
+                15: 1.3,
+                16: 1.6,
+                17: 2.2,
+                18: 2.5,
+                19: 2.0,
+                20: 1.5,
+                21: 1.0,
+                22: 0.8,
+                23: 0.5,
+                0: 0.3,
+                1: 0.2,
+                2: 0.1,
+                3: 0.1,
+                4: 0.2,
+                5: 0.3,
             }
             self.patterns.append(HourlyPattern(default_hourly))
 
         # Weekday pattern
-        if 'weekday_pattern' in config:
-            weekday_config = config['weekday_pattern']
+        if "weekday_pattern" in config:
+            weekday_config = config["weekday_pattern"]
             self.patterns.append(WeekdayPattern(weekday_config))
         else:
             # Default weekday pattern (Monday=0, Sunday=6)
-            default_weekday = {0: 1.2, 1: 1.3, 2: 1.3,
-                               3: 1.3, 4: 1.4, 5: 0.8, 6: 0.6}
+            default_weekday = {0: 1.2, 1: 1.3, 2: 1.3, 3: 1.3, 4: 1.4, 5: 0.8, 6: 0.6}
             self.patterns.append(WeekdayPattern(default_weekday))
 
         # Rush hour pattern
-        if 'rush_hour_pattern' in config:
-            rush_config = config['rush_hour_pattern']
-            morning_peak = (rush_config.get('morning_start', 7),
-                            rush_config.get('morning_end', 9))
-            evening_peak = (rush_config.get('evening_start', 17),
-                            rush_config.get('evening_end', 19))
-            peak_multiplier = rush_config.get('peak_multiplier', 2.0)
-            self.patterns.append(RushHourPattern(
-                morning_peak, evening_peak, peak_multiplier))
+        if "rush_hour_pattern" in config:
+            rush_config = config["rush_hour_pattern"]
+            morning_peak = (
+                rush_config.get("morning_start", 7),
+                rush_config.get("morning_end", 9),
+            )
+            evening_peak = (
+                rush_config.get("evening_start", 17),
+                rush_config.get("evening_end", 19),
+            )
+            peak_multiplier = rush_config.get("peak_multiplier", 2.0)
+            self.patterns.append(
+                RushHourPattern(morning_peak, evening_peak, peak_multiplier)
+            )
         else:
             # Default rush hour pattern
             self.patterns.append(RushHourPattern())

@@ -96,16 +96,16 @@ class TestTemporalPatternEngine(unittest.TestCase):
     def setUp(self):
         """Set up test fixtures"""
         self.config = {
-            'base_rate': 10.0,
-            'hourly_pattern': {8: 2.0, 17: 2.5},
-            'weekday_pattern': {0: 1.2, 6: 0.6},
-            'rush_hour_pattern': {
-                'morning_start': 7,
-                'morning_end': 9,
-                'evening_start': 17,
-                'evening_end': 19,
-                'peak_multiplier': 1.5
-            }
+            "base_rate": 10.0,
+            "hourly_pattern": {8: 2.0, 17: 2.5},
+            "weekday_pattern": {0: 1.2, 6: 0.6},
+            "rush_hour_pattern": {
+                "morning_start": 7,
+                "morning_end": 9,
+                "evening_start": 17,
+                "evening_end": 19,
+                "peak_multiplier": 1.5,
+            },
         }
         self.engine = TemporalPatternEngine(self.config)
 
@@ -116,11 +116,13 @@ class TestTemporalPatternEngine(unittest.TestCase):
 
     def test_initialization_with_defaults(self):
         """Test engine initialization with default patterns"""
-        minimal_config = {'base_rate': 5.0}
+        minimal_config = {"base_rate": 5.0}
         engine = TemporalPatternEngine(minimal_config)
 
         self.assertEqual(engine.base_rate, 5.0)
-        self.assertEqual(len(engine.patterns), 3)  # Should still have all 3 default patterns
+        self.assertEqual(
+            len(engine.patterns), 3
+        )  # Should still have all 3 default patterns
 
     def test_calculate_demand_rate_combined_patterns(self):
         """Test demand rate calculation with multiple patterns"""
@@ -183,5 +185,5 @@ class TestTemporalPatternEngine(unittest.TestCase):
         self.assertGreater(rate, 0)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

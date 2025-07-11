@@ -19,14 +19,14 @@ def signal_handler(sig, frame):
 def main():
     parser = argparse.ArgumentParser(description='Transit Demand Generator')
     parser.add_argument(
-        '--config',
-        default='config/demand_config.yaml',
-        help='Path to configuration file (default: config/demand_config.yaml)'
+        "--config",
+        default="config/demand_config.yaml",
+        help="Path to configuration file (default: config/demand_config.yaml)",
     )
     parser.add_argument(
-        '--duration',
+        "--duration",
         type=int,
-        help='Run for specified number of seconds (default: run indefinitely)'
+        help="Run for specified number of seconds (default: run indefinitely)",
     )
 
     args = parser.parse_args()
@@ -47,6 +47,7 @@ def main():
         if args.duration:
             print(f"Running for {args.duration} seconds...")
             import time
+
             time.sleep(args.duration)
             generator.stop_streaming()
             print("Finished generating demand.")
@@ -55,6 +56,7 @@ def main():
             try:
                 while generator.running:
                     import time
+
                     time.sleep(1)
             except KeyboardInterrupt:
                 pass
@@ -70,5 +72,5 @@ def main():
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
