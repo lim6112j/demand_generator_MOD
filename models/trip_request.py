@@ -1,7 +1,7 @@
+import json
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional
-import json
+
 
 @dataclass
 class TripRequest:
@@ -12,7 +12,7 @@ class TripRequest:
     passenger_count: int
     trip_purpose: str
     priority: int = 1
-    
+
     def to_json(self) -> str:
         """Convert to JSON format for streaming"""
         data = {
@@ -25,7 +25,7 @@ class TripRequest:
             'priority': self.priority
         }
         return json.dumps(data)
-        
+
     @classmethod
     def from_json(cls, json_str: str) -> 'TripRequest':
         """Create TripRequest from JSON string"""

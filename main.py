@@ -6,6 +6,7 @@ Main entry point for the demand generator.
 import argparse
 import signal
 import sys
+
 from demand_generator import DemandGenerator
 
 
@@ -18,7 +19,7 @@ def signal_handler(sig, frame):
 def main():
     parser = argparse.ArgumentParser(description='Transit Demand Generator')
     parser.add_argument(
-        '--config', 
+        '--config',
         default='config/demand_config.yaml',
         help='Path to configuration file (default: config/demand_config.yaml)'
     )
@@ -27,22 +28,22 @@ def main():
         type=int,
         help='Run for specified number of seconds (default: run indefinitely)'
     )
-    
+
     args = parser.parse_args()
-    
+
     # Set up signal handler for graceful shutdown
     signal.signal(signal.SIGINT, signal_handler)
-    
+
     try:
         # Initialize demand generator
         print(f"Loading configuration from: {args.config}")
         generator = DemandGenerator(args.config)
-        
+
         # Start streaming
         print("Starting demand generation...")
         print("Press Ctrl+C to stop")
         generator.start_streaming()
-        
+
         if args.duration:
             print(f"Running for {args.duration} seconds...")
             import time
@@ -60,7 +61,7 @@ def main():
             finally:
                 generator.stop_streaming()
                 print("Demand generator stopped.")
-                
+
     except FileNotFoundError:
         print(f"Error: Configuration file '{args.config}' not found.")
         sys.exit(1)
