@@ -9,6 +9,7 @@ from geographic.zone_manager import StopRegistry
 from models.trip_request import TripRequest
 from patterns.temporal_engine import TemporalPatternEngine
 
+
 class DemandGenerator:
     def __init__(self, config_path: str):
         # Load configuration
