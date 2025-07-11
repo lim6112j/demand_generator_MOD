@@ -113,3 +113,8 @@ disallow_untyped_defs = false
 [tool.bandit]
 exclude_dirs = ["tests", "test_*.py"]
 skips = ["B101", "B601"]
+
+[dependency-groups]
+dev = [
+    "types-pyyaml>=6.0.12.20250516",
+]
