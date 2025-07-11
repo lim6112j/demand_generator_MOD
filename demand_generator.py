@@ -20,9 +20,9 @@ class DemandGenerator:
         self.temporal_engine = TemporalPatternEngine(self.config['temporal_patterns'])
         
         # Set up streaming parameters
-        self.base_rate = self.config['streaming']['rate_per_second']
+        self.base_rate = self.config['streaming'].get('rate_per_second', 0.167)  # Default to 10 requests per minute
         self.output_format = self.config['streaming']['output_format']
-        self.burst_enabled = self.config['streaming']['burst_enabled']
+        self.burst_enabled = self.config['streaming'].get('burst_enabled', True)
         
         # Threading control
         self.running = False
@@ -49,7 +49,7 @@ class DemandGenerator:
             current_time = datetime.now()
             
             # Get current demand rate multiplier
-            demand_multiplier = self.temporal_engine.get_demand_rate(current_time)
+            demand_multiplier = self.temporal_engine.calculate_demand_rate(current_time)
             current_rate = self.base_rate * demand_multiplier
             
             # Generate trip requests for this time period
@@ -78,13 +78,17 @@ class DemandGenerator:
     def _generate_trip_request(self, timestamp: datetime) -> TripRequest:
         """Generate a single trip request"""
         # Select random origin and destination zones
-        zones = list(self.config['geographic']['zones'])
+        zones = self.config['geographic']['default_zones']
         origin_zone = random.choice(zones)['id']
         destination_zone = random.choice(zones)['id']
         
         # Get random stops from selected zones
-        origin_stop = self.stop_registry.get_random_stop_in_zone(origin_zone)
-        destination_stop = self.stop_registry.get_random_stop_in_zone(destination_zone)
+        origin_stops = self.stop_registry.get_stops_in_zone(origin_zone)
+        destination_stops = self.stop_registry.get_stops_in_zone(destination_zone)
+        
+        # Fallback to any random stop if zone has no stops
+        origin_stop = random.choice(origin_stops).id if origin_stops else self.stop_registry.get_random_stop().id
+        destination_stop = random.choice(destination_stops).id if destination_stops else self.stop_registry.get_random_stop().id
         
         # Generate trip request
         trip_request = TripRequest(

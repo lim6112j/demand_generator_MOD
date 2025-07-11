@@ -6,8 +6,10 @@ base_rate: 10.0
 # Streaming configuration
 streaming:
   interval_seconds: 5
+  rate_per_second: 0.167  # Equivalent to 10 requests per minute
   output_format: "json"
   enable_logging: true
+  burst_enabled: true
 
 # Temporal patterns configuration
 temporal_patterns:
