@@ -147,13 +147,13 @@ class TestDemandGenerator(unittest.TestCase):
         self.assertIn(trip_request.id, output)
 
     @patch("time.sleep")
-    @patch("demand_generator.datetime.now")
-    def test_streaming_loop_single_iteration(self, mock_datetime_now: MagicMock, mock_sleep: MagicMock) -> None:
+    @patch("demand_generator.datetime")
+    def test_streaming_loop_single_iteration(self, mock_datetime: MagicMock, mock_sleep: MagicMock) -> None:
         """Test a single iteration of the streaming loop"""
         # Mock current time
         # Thursday morning rush hour
         test_time = datetime(2023, 6, 15, 8, 30, 0)
-        mock_datetime_now.return_value = test_time
+        mock_datetime.now.return_value = test_time
 
         # Start streaming in a separate thread
         self.demand_generator.start_streaming()
