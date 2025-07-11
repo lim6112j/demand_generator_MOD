@@ -103,7 +103,6 @@ class TestDemandGenerator(unittest.TestCase):
         # Mock current time
         test_time = datetime(2023, 6, 15, 8, 30, 0)
         mock_datetime.now.return_value = test_time
-
         trip_request = self.demand_generator._generate_trip_request(test_time)
 
         self.assertIsInstance(trip_request, TripRequest)
