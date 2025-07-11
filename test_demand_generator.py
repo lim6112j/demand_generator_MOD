@@ -55,8 +55,7 @@ class TestDemandGenerator(unittest.TestCase):
         }
 
         # Create temporary config file
-        self.temp_config = tempfile.NamedTemporaryFile(
-            mode="w", suffix=".yaml", delete=False)
+        self.temp_config = tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False)
         import yaml
 
         yaml.dump(self.config_data, self.temp_config)
@@ -148,7 +147,9 @@ class TestDemandGenerator(unittest.TestCase):
 
     @patch("time.sleep")
     @patch("demand_generator.datetime")
-    def test_streaming_loop_single_iteration(self, mock_datetime: MagicMock, mock_sleep: MagicMock) -> None:
+    def test_streaming_loop_single_iteration(
+        self, mock_datetime: MagicMock, mock_sleep: MagicMock
+    ) -> None:
         """Test a single iteration of the streaming loop"""
         # Mock current time
         # Thursday morning rush hour
