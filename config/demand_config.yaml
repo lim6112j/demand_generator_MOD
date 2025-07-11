@@ -1,0 +1,113 @@
+# Demand Generator Configuration
+
+# Base demand rate (requests per minute)
+base_rate: 10.0
+
+# Streaming configuration
+streaming:
+  interval_seconds: 5
+  output_format: "json"
+  enable_logging: true
+
+# Temporal patterns configuration
+temporal_patterns:
+  base_rate: 10.0
+  
+  # Hourly demand multipliers (24-hour format)
+  hourly_pattern:
+    0: 0.3   # Midnight
+    1: 0.2
+    2: 0.1
+    3: 0.1
+    4: 0.2
+    5: 0.3
+    6: 0.5   # Early morning
+    7: 1.5   # Morning rush starts
+    8: 2.0   # Peak morning
+    9: 1.8
+    10: 1.2
+    11: 1.3
+    12: 1.5  # Lunch time
+    13: 1.4
+    14: 1.2
+    15: 1.3
+    16: 1.6
+    17: 2.2  # Evening rush starts
+    18: 2.5  # Peak evening
+    19: 2.0
+    20: 1.5
+    21: 1.0
+    22: 0.8
+    23: 0.5
+  
+  # Weekday multipliers (0=Monday, 6=Sunday)
+  weekday_pattern:
+    0: 1.2   # Monday
+    1: 1.3   # Tuesday
+    2: 1.3   # Wednesday
+    3: 1.3   # Thursday
+    4: 1.4   # Friday
+    5: 0.8   # Saturday
+    6: 0.6   # Sunday
+  
+  # Rush hour configuration
+  rush_hour_pattern:
+    morning_start: 7
+    morning_end: 9
+    evening_start: 17
+    evening_end: 19
+    peak_multiplier: 1.5
+
+# Geographic configuration
+geographic:
+  default_zones:
+    - id: "downtown"
+      name: "Downtown"
+      center_lat: 40.7589
+      center_lon: -73.9851
+      radius_km: 2.0
+      demand_weight: 3.0
+    
+    - id: "midtown"
+      name: "Midtown"
+      center_lat: 40.7505
+      center_lon: -73.9934
+      radius_km: 1.5
+      demand_weight: 2.5
+    
+    - id: "uptown"
+      name: "Uptown"
+      center_lat: 40.7831
+      center_lon: -73.9712
+      radius_km: 2.5
+      demand_weight: 1.5
+    
+    - id: "suburbs"
+      name: "Suburbs"
+      center_lat: 40.7282
+      center_lon: -73.7949
+      radius_km: 5.0
+      demand_weight: 1.0
+
+# Trip request configuration
+trip_request:
+  id_prefix: "trip_"
+  default_passenger_count: 1
+  max_passenger_count: 4
+  
+  # Request types and their probabilities
+  request_types:
+    immediate: 0.7
+    scheduled: 0.3
+  
+  # Time windows for scheduled requests (in minutes)
+  scheduled_time_window:
+    min_advance: 15
+    max_advance: 120
+
+# Output configuration
+output:
+  console_logging: true
+  file_logging: false
+  log_file: "demand_generator.log"
+  json_pretty_print: true
