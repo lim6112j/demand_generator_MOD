@@ -4,7 +4,6 @@ import tempfile
 import time
 import unittest
 from datetime import datetime
-from typing import Any
 from unittest.mock import MagicMock, patch
 
 from demand_generator import DemandGenerator
@@ -56,7 +55,8 @@ class TestDemandGenerator(unittest.TestCase):
         }
 
         # Create temporary config file
-        self.temp_config = tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False)
+        self.temp_config = tempfile.NamedTemporaryFile(
+            mode="w", suffix=".yaml", delete=False)
         import yaml
 
         yaml.dump(self.config_data, self.temp_config)
@@ -98,7 +98,7 @@ class TestDemandGenerator(unittest.TestCase):
         self.assertEqual(count, 0)
 
     @patch("demand_generator.datetime")
-    def test_generate_trip_request(self, mock_datetime):
+    def test_generate_trip_request(self, mock_datetime: datetime) -> None:
         """Test trip request generation"""
         # Mock current time
         test_time = datetime(2023, 6, 15, 8, 30, 0)
@@ -152,7 +152,8 @@ class TestDemandGenerator(unittest.TestCase):
     def test_streaming_loop_single_iteration(self, mock_datetime: MagicMock, mock_sleep: MagicMock) -> None:
         """Test a single iteration of the streaming loop"""
         # Mock current time
-        test_time = datetime(2023, 6, 15, 8, 30, 0)  # Thursday morning rush hour
+        # Thursday morning rush hour
+        test_time = datetime(2023, 6, 15, 8, 30, 0)
         mock_datetime.now.return_value = test_time
 
         # Start streaming in a separate thread
