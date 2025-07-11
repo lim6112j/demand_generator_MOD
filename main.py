@@ -6,11 +6,12 @@ Main entry point for the demand generator.
 import argparse
 import signal
 import sys
+from typing import Any
 
 from demand_generator import DemandGenerator
 
 
-def signal_handler(sig: int, frame: any) -> None:
+def signal_handler(sig: int, frame: Any) -> None:
     """Handle Ctrl+C gracefully"""
     print("\nShutting down demand generator...")
     sys.exit(0)

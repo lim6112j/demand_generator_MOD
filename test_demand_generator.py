@@ -4,7 +4,8 @@ import tempfile
 import time
 import unittest
 from datetime import datetime
-from unittest.mock import patch
+from typing import Any
+from unittest.mock import MagicMock, patch
 
 from demand_generator import DemandGenerator
 from models.trip_request import TripRequest
@@ -56,7 +57,7 @@ class TestDemandGenerator(unittest.TestCase):
 
         # Create temporary config file
         self.temp_config = tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False)
-        import yaml
+        import yaml  # type: ignore
 
         yaml.dump(self.config_data, self.temp_config)
         self.temp_config.close()
@@ -118,7 +119,7 @@ class TestDemandGenerator(unittest.TestCase):
         self.assertIn(trip_request.priority, range(1, 4))
 
     @patch("builtins.print")
-    def test_send_to_output_stream_json(self, mock_print: any) -> None:
+    def test_send_to_output_stream_json(self, mock_print: MagicMock) -> None:
         """Test JSON output stream"""
         test_time = datetime(2023, 6, 15, 8, 30, 0)
         trip_request = self.demand_generator._generate_trip_request(test_time)
@@ -133,7 +134,7 @@ class TestDemandGenerator(unittest.TestCase):
         self.assertEqual(parsed["id"], trip_request.id)
 
     @patch("builtins.print")
-    def test_send_to_output_stream_text(self, mock_print: any) -> None:
+    def test_send_to_output_stream_text(self, mock_print: MagicMock) -> None:
         """Test text output stream"""
         self.demand_generator.output_format = "text"
         test_time = datetime(2023, 6, 15, 8, 30, 0)
@@ -148,7 +149,7 @@ class TestDemandGenerator(unittest.TestCase):
 
     @patch("time.sleep")
     @patch("demand_generator.datetime")
-    def test_streaming_loop_single_iteration(self, mock_datetime: any, mock_sleep: any) -> None:
+    def test_streaming_loop_single_iteration(self, mock_datetime: MagicMock, mock_sleep: MagicMock) -> None:
         """Test a single iteration of the streaming loop"""
         # Mock current time
         test_time = datetime(2023, 6, 15, 8, 30, 0)  # Thursday morning rush hour

@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Any
 
 
 class TimePattern:
@@ -60,12 +61,12 @@ class RushHourPattern(TimePattern):
 class TemporalPatternEngine:
     """Manages multiple temporal patterns and calculates combined demand"""
 
-    def __init__(self, config: dict[str, any]):
+    def __init__(self, config: dict[str, Any]):
         self.patterns: list[TimePattern] = []
         self.base_rate = config.get("base_rate", 10.0)  # requests per minute
         self._initialize_patterns(config)
 
-    def _initialize_patterns(self, config: dict[str, any]) -> None:
+    def _initialize_patterns(self, config: dict[str, Any]) -> None:
         """Initialize patterns from configuration"""
 
         # Hourly pattern

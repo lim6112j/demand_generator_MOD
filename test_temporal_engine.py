@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime
+from typing import Any
 
 from patterns.temporal_engine import (
     HourlyPattern,
@@ -164,7 +165,7 @@ class TestTemporalPatternEngine(unittest.TestCase):
 
     def test_engine_with_minimal_config(self) -> None:
         """Test engine behavior with minimal configuration"""
-        minimal_config: dict[str, any] = {}
+        minimal_config: dict[str, Any] = {}
         engine = TemporalPatternEngine(minimal_config)
 
         # Should use default base rate
