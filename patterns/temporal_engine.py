@@ -90,6 +90,9 @@ class TemporalPatternEngine:
             evening_peak = (rush_config.get('evening_start', 17), rush_config.get('evening_end', 19))
             peak_multiplier = rush_config.get('peak_multiplier', 2.0)
             self.patterns.append(RushHourPattern(morning_peak, evening_peak, peak_multiplier))
+        else:
+            # Default rush hour pattern
+            self.patterns.append(RushHourPattern())
     
     def calculate_demand_rate(self, timestamp: datetime) -> float:
         """Calculate current demand rate based on all patterns"""
