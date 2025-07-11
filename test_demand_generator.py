@@ -11,7 +11,7 @@ from models.trip_request import TripRequest
 
 
 class TestDemandGenerator(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         """Set up test fixtures"""
         # Create a temporary config file for testing
         self.config_data = {
@@ -63,7 +63,7 @@ class TestDemandGenerator(unittest.TestCase):
 
         self.demand_generator = DemandGenerator(self.temp_config.name)
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         """Clean up test fixtures"""
         # Stop any running streaming
         if self.demand_generator.running:
@@ -72,7 +72,7 @@ class TestDemandGenerator(unittest.TestCase):
         # Remove temporary config file
         os.unlink(self.temp_config.name)
 
-    def test_initialization(self):
+    def test_initialization(self) -> None:
         """Test that DemandGenerator initializes correctly"""
         self.assertIsNotNone(self.demand_generator.config)
         self.assertIsNotNone(self.demand_generator.stop_registry)
@@ -118,7 +118,7 @@ class TestDemandGenerator(unittest.TestCase):
         self.assertIn(trip_request.priority, range(1, 4))
 
     @patch("builtins.print")
-    def test_send_to_output_stream_json(self, mock_print):
+    def test_send_to_output_stream_json(self, mock_print: any) -> None:
         """Test JSON output stream"""
         test_time = datetime(2023, 6, 15, 8, 30, 0)
         trip_request = self.demand_generator._generate_trip_request(test_time)
@@ -133,7 +133,7 @@ class TestDemandGenerator(unittest.TestCase):
         self.assertEqual(parsed["id"], trip_request.id)
 
     @patch("builtins.print")
-    def test_send_to_output_stream_text(self, mock_print):
+    def test_send_to_output_stream_text(self, mock_print: any) -> None:
         """Test text output stream"""
         self.demand_generator.output_format = "text"
         test_time = datetime(2023, 6, 15, 8, 30, 0)
@@ -148,7 +148,7 @@ class TestDemandGenerator(unittest.TestCase):
 
     @patch("time.sleep")
     @patch("demand_generator.datetime")
-    def test_streaming_loop_single_iteration(self, mock_datetime, mock_sleep):
+    def test_streaming_loop_single_iteration(self, mock_datetime: any, mock_sleep: any) -> None:
         """Test a single iteration of the streaming loop"""
         # Mock current time
         test_time = datetime(2023, 6, 15, 8, 30, 0)  # Thursday morning rush hour
@@ -166,7 +166,7 @@ class TestDemandGenerator(unittest.TestCase):
         # Verify sleep was called (indicating loop ran)
         mock_sleep.assert_called()
 
-    def test_start_stop_streaming(self):
+    def test_start_stop_streaming(self) -> None:
         """Test starting and stopping the streaming process"""
         # Initially not running
         self.assertFalse(self.demand_generator.running)
@@ -182,9 +182,10 @@ class TestDemandGenerator(unittest.TestCase):
         self.assertFalse(self.demand_generator.running)
 
         # Thread should be joined and finished
-        self.assertFalse(self.demand_generator.thread.is_alive())
+        if self.demand_generator.thread:
+            self.assertFalse(self.demand_generator.thread.is_alive())
 
-    def test_start_streaming_when_already_running(self):
+    def test_start_streaming_when_already_running(self) -> None:
         """Test that starting streaming when already running has no effect"""
         self.demand_generator.start_streaming()
         first_thread = self.demand_generator.thread

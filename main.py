@@ -10,13 +10,13 @@ import sys
 from demand_generator import DemandGenerator
 
 
-def signal_handler(sig, frame):
+def signal_handler(sig: int, frame: any) -> None:
     """Handle Ctrl+C gracefully"""
     print("\nShutting down demand generator...")
     sys.exit(0)
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Transit Demand Generator")
     parser.add_argument(
         "--config",

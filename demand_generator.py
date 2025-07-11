@@ -2,6 +2,7 @@ import random
 import threading
 import time
 from datetime import datetime
+from typing import Optional
 
 import yaml
 
@@ -26,9 +27,9 @@ class DemandGenerator:
         self.burst_enabled = self.config["streaming"].get("burst_enabled", True)
         # Threading control
         self.running = False
-        self.thread = None
+        self.thread: Optional[threading.Thread] = None
 
-    def start_streaming(self):
+    def start_streaming(self) -> None:
         """Start the demand generation streaming process"""
         if self.running:
             return
@@ -36,13 +37,13 @@ class DemandGenerator:
         self.thread = threading.Thread(target=self._streaming_loop)
         self.thread.start()
 
-    def stop_streaming(self):
+    def stop_streaming(self) -> None:
         """Clean shutdown of streaming process"""
         self.running = False
         if self.thread:
             self.thread.join()
 
-    def _streaming_loop(self):
+    def _streaming_loop(self) -> None:
         """Main streaming loop - generates trip requests based on temporal patterns"""
         while self.running:
             current_time = datetime.now()
@@ -100,7 +101,7 @@ class DemandGenerator:
         )
         return trip_request
 
-    def _send_to_output_stream(self, trip_request: TripRequest):
+    def _send_to_output_stream(self, trip_request: TripRequest) -> None:
         """Send trip request to output stream"""
         if self.output_format == "json":
             output = trip_request.to_json()

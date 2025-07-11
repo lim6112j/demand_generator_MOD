@@ -35,8 +35,8 @@ class RushHourPattern(TimePattern):
 
     def __init__(
         self,
-        morning_peak: tuple = (7, 9),
-        evening_peak: tuple = (17, 19),
+        morning_peak: tuple[int, int] = (7, 9),
+        evening_peak: tuple[int, int] = (17, 19),
         peak_multiplier: float = 2.0,
     ):
         self.morning_start, self.morning_end = morning_peak
@@ -60,12 +60,12 @@ class RushHourPattern(TimePattern):
 class TemporalPatternEngine:
     """Manages multiple temporal patterns and calculates combined demand"""
 
-    def __init__(self, config: dict):
+    def __init__(self, config: dict[str, any]):
         self.patterns: list[TimePattern] = []
         self.base_rate = config.get("base_rate", 10.0)  # requests per minute
         self._initialize_patterns(config)
 
-    def _initialize_patterns(self, config: dict):
+    def _initialize_patterns(self, config: dict[str, any]) -> None:
         """Initialize patterns from configuration"""
 
         # Hourly pattern
@@ -137,6 +137,6 @@ class TemporalPatternEngine:
 
         return self.base_rate * total_multiplier
 
-    def add_pattern(self, pattern: TimePattern):
+    def add_pattern(self, pattern: TimePattern) -> None:
         """Add a custom pattern to the engine"""
         self.patterns.append(pattern)

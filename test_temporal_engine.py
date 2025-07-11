@@ -10,7 +10,7 @@ from patterns.temporal_engine import (
 
 
 class TestTimePatterns(unittest.TestCase):
-    def test_hourly_pattern(self):
+    def test_hourly_pattern(self) -> None:
         """Test hourly demand pattern"""
         hourly_multipliers = {8: 2.0, 17: 2.5, 2: 0.1}
         pattern = HourlyPattern(hourly_multipliers)
@@ -29,7 +29,7 @@ class TestTimePatterns(unittest.TestCase):
         undefined_time = datetime(2023, 6, 15, 12, 0, 0)
         self.assertEqual(pattern.get_demand_multiplier(undefined_time), 1.0)
 
-    def test_weekday_pattern(self):
+    def test_weekday_pattern(self) -> None:
         """Test weekday demand pattern"""
         weekday_multipliers = {0: 1.2, 4: 1.4, 6: 0.6}  # Monday, Friday, Sunday
         pattern = WeekdayPattern(weekday_multipliers)
@@ -50,7 +50,7 @@ class TestTimePatterns(unittest.TestCase):
         tuesday = datetime(2023, 6, 13, 10, 0, 0)  # June 13, 2023 is a Tuesday
         self.assertEqual(pattern.get_demand_multiplier(tuesday), 1.0)
 
-    def test_rush_hour_pattern(self):
+    def test_rush_hour_pattern(self) -> None:
         """Test rush hour demand pattern"""
         pattern = RushHourPattern(morning_peak=(7, 9), evening_peak=(17, 19), peak_multiplier=2.5)
 
@@ -73,7 +73,7 @@ class TestTimePatterns(unittest.TestCase):
         after_morning_rush = datetime(2023, 6, 15, 9, 0, 0)
         self.assertEqual(pattern.get_demand_multiplier(after_morning_rush), 1.0)
 
-    def test_rush_hour_pattern_default_values(self):
+    def test_rush_hour_pattern_default_values(self) -> None:
         """Test rush hour pattern with default values"""
         pattern = RushHourPattern()
 
@@ -87,7 +87,7 @@ class TestTimePatterns(unittest.TestCase):
 
 
 class TestTemporalPatternEngine(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         """Set up test fixtures"""
         self.config = {
             "base_rate": 10.0,
@@ -103,20 +103,20 @@ class TestTemporalPatternEngine(unittest.TestCase):
         }
         self.engine = TemporalPatternEngine(self.config)
 
-    def test_initialization_with_config(self):
+    def test_initialization_with_config(self) -> None:
         """Test engine initialization with provided config"""
         self.assertEqual(self.engine.base_rate, 10.0)
         self.assertEqual(len(self.engine.patterns), 3)  # hourly, weekday, rush hour
 
-    def test_initialization_with_defaults(self):
+    def test_initialization_with_defaults(self) -> None:
         """Test engine initialization with default patterns"""
-        minimal_config = {"base_rate": 5.0}
+        minimal_config: dict[str, float] = {"base_rate": 5.0}
         engine = TemporalPatternEngine(minimal_config)
 
         self.assertEqual(engine.base_rate, 5.0)
         self.assertEqual(len(engine.patterns), 3)  # Should still have all 3 default patterns
 
-    def test_calculate_demand_rate_combined_patterns(self):
+    def test_calculate_demand_rate_combined_patterns(self) -> None:
         """Test demand rate calculation with multiple patterns"""
         # Monday morning rush hour: should combine all multipliers
         monday_morning_rush = datetime(2023, 6, 12, 8, 0, 0)  # Monday, 8 AM
@@ -126,7 +126,7 @@ class TestTemporalPatternEngine(unittest.TestCase):
         rate = self.engine.calculate_demand_rate(monday_morning_rush)
         self.assertEqual(rate, 36.0)
 
-    def test_calculate_demand_rate_partial_patterns(self):
+    def test_calculate_demand_rate_partial_patterns(self) -> None:
         """Test demand rate with only some patterns active"""
         # Sunday afternoon (no rush hour, different weekday multiplier)
         sunday_afternoon = datetime(2023, 6, 18, 14, 0, 0)  # Sunday, 2 PM
@@ -136,7 +136,7 @@ class TestTemporalPatternEngine(unittest.TestCase):
         rate = self.engine.calculate_demand_rate(sunday_afternoon)
         self.assertEqual(rate, 6.0)
 
-    def test_calculate_demand_rate_no_multipliers(self):
+    def test_calculate_demand_rate_no_multipliers(self) -> None:
         """Test demand rate when no patterns apply"""
         # Tuesday midday (no special patterns)
         tuesday_midday = datetime(2023, 6, 13, 12, 0, 0)  # Tuesday, 12 PM
@@ -145,7 +145,7 @@ class TestTemporalPatternEngine(unittest.TestCase):
         rate = self.engine.calculate_demand_rate(tuesday_midday)
         self.assertEqual(rate, 10.0)
 
-    def test_add_custom_pattern(self):
+    def test_add_custom_pattern(self) -> None:
         """Test adding a custom pattern to the engine"""
         initial_pattern_count = len(self.engine.patterns)
 
@@ -162,9 +162,9 @@ class TestTemporalPatternEngine(unittest.TestCase):
         # Should include the custom pattern's multiplier
         self.assertGreater(rate, self.engine.base_rate)
 
-    def test_engine_with_minimal_config(self):
+    def test_engine_with_minimal_config(self) -> None:
         """Test engine behavior with minimal configuration"""
-        minimal_config = {}
+        minimal_config: dict[str, any] = {}
         engine = TemporalPatternEngine(minimal_config)
 
         # Should use default base rate

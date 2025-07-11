@@ -19,7 +19,7 @@ class GeographicZone:
         lat_diff = lat - self.center_lat
         lon_diff = lon - self.center_lon
         distance_km = ((lat_diff**2 + lon_diff**2) ** 0.5) * 111  # Rough km conversion
-        return distance_km <= self.radius_km
+        return bool(distance_km <= self.radius_km)
 
 
 @dataclass
@@ -37,12 +37,12 @@ class Stop:
 class StopRegistry:
     """Manages all transit stops in the system"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.stops: list[Stop] = []
         self.zones: list[GeographicZone] = []
         self._initialize_default_data()
 
-    def _initialize_default_data(self):
+    def _initialize_default_data(self) -> None:
         """Initialize with some default zones and stops for testing"""
         # Default zones (example city layout)
         self.zones = [
@@ -77,10 +77,10 @@ class StopRegistry:
         """Get all stops in a specific zone"""
         return [stop for stop in self.stops if stop.zone_id == zone_id]
 
-    def add_stop(self, stop: Stop):
+    def add_stop(self, stop: Stop) -> None:
         """Add a new stop to the registry"""
         self.stops.append(stop)
 
-    def add_zone(self, zone: GeographicZone):
+    def add_zone(self, zone: GeographicZone) -> None:
         """Add a new zone to the registry"""
         self.zones.append(zone)
