@@ -11,7 +11,6 @@ from models.trip_request import TripRequest
 
 
 class TestDemandGenerator(unittest.TestCase):
-
     def setUp(self):
         """Set up test fixtures"""
         # Create a temporary config file for testing
@@ -56,9 +55,7 @@ class TestDemandGenerator(unittest.TestCase):
         }
 
         # Create temporary config file
-        self.temp_config = tempfile.NamedTemporaryFile(
-            mode="w", suffix=".yaml", delete=False
-        )
+        self.temp_config = tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False)
         import yaml
 
         yaml.dump(self.config_data, self.temp_config)
@@ -99,7 +96,7 @@ class TestDemandGenerator(unittest.TestCase):
         count = self.demand_generator._calculate_requests_count(0.0)
         self.assertEqual(count, 0)
 
-    @patch('demand_generator.datetime')
+    @patch("demand_generator.datetime")
     def test_generate_trip_request(self, mock_datetime):
         """Test trip request generation"""
         # Mock current time
@@ -109,7 +106,7 @@ class TestDemandGenerator(unittest.TestCase):
         trip_request = self.demand_generator._generate_trip_request(test_time)
 
         self.assertIsInstance(trip_request, TripRequest)
-        self.assertTrue(trip_request.id.startswith('trip_'))
+        self.assertTrue(trip_request.id.startswith("trip_"))
         self.assertIsNotNone(trip_request.origin_stop_id)
         self.assertIsNotNone(trip_request.destination_stop_id)
         self.assertEqual(trip_request.timestamp, test_time)
@@ -120,7 +117,7 @@ class TestDemandGenerator(unittest.TestCase):
         )
         self.assertIn(trip_request.priority, range(1, 4))
 
-    @patch('builtins.print')
+    @patch("builtins.print")
     def test_send_to_output_stream_json(self, mock_print):
         """Test JSON output stream"""
         test_time = datetime(2023, 6, 15, 8, 30, 0)

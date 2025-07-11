@@ -4,7 +4,6 @@ from geographic.zone_manager import GeographicZone, Stop, StopRegistry
 
 
 class TestGeographicZone(unittest.TestCase):
-
     def setUp(self):
         """Set up test fixtures"""
         self.zone = GeographicZone(
@@ -52,7 +51,6 @@ class TestGeographicZone(unittest.TestCase):
 
 
 class TestStop(unittest.TestCase):
-
     def test_stop_initialization(self):
         """Test stop initialization"""
         stop = Stop(
@@ -84,7 +82,6 @@ class TestStop(unittest.TestCase):
 
 
 class TestStopRegistry(unittest.TestCase):
-
     def setUp(self):
         """Set up test fixtures"""
         self.registry = StopRegistry()

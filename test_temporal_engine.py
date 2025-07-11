@@ -10,7 +10,6 @@ from patterns.temporal_engine import (
 
 
 class TestTimePatterns(unittest.TestCase):
-
     def test_hourly_pattern(self):
         """Test hourly demand pattern"""
         hourly_multipliers = {8: 2.0, 17: 2.5, 2: 0.1}
@@ -53,11 +52,7 @@ class TestTimePatterns(unittest.TestCase):
 
     def test_rush_hour_pattern(self):
         """Test rush hour demand pattern"""
-        pattern = RushHourPattern(
-            morning_peak=(7, 9),
-            evening_peak=(17, 19),
-            peak_multiplier=2.5
-        )
+        pattern = RushHourPattern(morning_peak=(7, 9), evening_peak=(17, 19), peak_multiplier=2.5)
 
         # Test morning rush hour
         morning_rush = datetime(2023, 6, 15, 8, 0, 0)
@@ -92,7 +87,6 @@ class TestTimePatterns(unittest.TestCase):
 
 
 class TestTemporalPatternEngine(unittest.TestCase):
-
     def setUp(self):
         """Set up test fixtures"""
         self.config = {
@@ -120,9 +114,7 @@ class TestTemporalPatternEngine(unittest.TestCase):
         engine = TemporalPatternEngine(minimal_config)
 
         self.assertEqual(engine.base_rate, 5.0)
-        self.assertEqual(
-            len(engine.patterns), 3
-        )  # Should still have all 3 default patterns
+        self.assertEqual(len(engine.patterns), 3)  # Should still have all 3 default patterns
 
     def test_calculate_demand_rate_combined_patterns(self):
         """Test demand rate calculation with multiple patterns"""

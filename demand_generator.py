@@ -27,6 +27,7 @@ class DemandGenerator:
         # Threading control
         self.running = False
         self.thread = None
+
     def start_streaming(self):
         """Start the demand generation streaming process"""
         if self.running:
@@ -34,11 +35,13 @@ class DemandGenerator:
         self.running = True
         self.thread = threading.Thread(target=self._streaming_loop)
         self.thread.start()
+
     def stop_streaming(self):
         """Clean shutdown of streaming process"""
         self.running = False
         if self.thread:
             self.thread.join()
+
     def _streaming_loop(self):
         """Main streaming loop - generates trip requests based on temporal patterns"""
         while self.running:
@@ -53,6 +56,7 @@ class DemandGenerator:
                 self._send_to_output_stream(trip_request)
             # Sleep until next generation cycle
             time.sleep(1.0)  # Generate every second
+
     def _calculate_requests_count(self, rate: float) -> int:
         """Calculate number of requests to generate based on current rate"""
         base_count = int(rate)
@@ -63,6 +67,7 @@ class DemandGenerator:
             if random.random() < remainder:
                 base_count += 1
         return base_count
+
     def _generate_trip_request(self, timestamp: datetime) -> TripRequest:
         """Generate a single trip request"""
         # Select random origin and destination zones
@@ -90,12 +95,11 @@ class DemandGenerator:
             destination_stop_id=destination_stop,
             timestamp=timestamp,
             passenger_count=random.randint(1, 4),
-            trip_purpose=random.choice(
-                ["work", "shopping", "leisure", "medical", "education"]
-            ),
+            trip_purpose=random.choice(["work", "shopping", "leisure", "medical", "education"]),
             priority=random.randint(1, 3),
         )
         return trip_request
+
     def _send_to_output_stream(self, trip_request: TripRequest):
         """Send trip request to output stream"""
         if self.output_format == "json":

@@ -123,9 +123,7 @@ class TemporalPatternEngine:
                 rush_config.get("evening_end", 19),
             )
             peak_multiplier = rush_config.get("peak_multiplier", 2.0)
-            self.patterns.append(
-                RushHourPattern(morning_peak, evening_peak, peak_multiplier)
-            )
+            self.patterns.append(RushHourPattern(morning_peak, evening_peak, peak_multiplier))
         else:
             # Default rush hour pattern
             self.patterns.append(RushHourPattern())
